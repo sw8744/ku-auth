@@ -7,61 +7,49 @@
 # 사용 방법
 `/api/ku_login` 주소로 `POST` 요청을 보냅니다. 이때 QueryString에 `id`와 `password` 값을 같이 해서 보냅니다.
 
-만일 로그인이 성공하였다면, 다음과 같은 결과값을 반환하게 됩니다. 이때, 반환된 정보는 ecampus에 등록된 사용자 정보를 반환합니다.
+만일 로그인이 성공하였다면, `200 OK`와 다음과 같은 결과값을 반환하게 됩니다. 이때, 반환된 정보는 ecampus에 등록된 사용자 정보를 반환합니다.
 ```json
 {
-  "status_code": 200,
   "detail": {
     "student_number": "202612345",
     "name": "김건국",
     "contact": "01012345678",
     "email": "ku@konkuk.ac.kr"
-  },
-  "headers": null
+  }
 }
 ```
 
-만일 로그인이 실패하였다면, 다음과 같은 결과값을 반환하게 됩니다.
+만일 로그인이 실패하였다면, `401 UNAUTHORIZED`와 다음과 같은 결과값을 반환하게 됩니다.
 ```json
 {
-  "status_code": 401,
-  "detail": "incorrect id or password",
-  "headers": null
+  "detail": "incorrect id or password"
 }
 ```
 
-만일 로그인이 5회 이상 실패하면 ecampus에서 해당 아이디의 로그인을 **5분 동안 정지** 시킵니다. 이때는 다음과 같은 결과값을 반환하게 됩니다.
+만일 로그인이 5회 이상 실패하면 ecampus에서 해당 아이디의 로그인을 **5분 동안 정지** 시킵니다. 이때는 `403 FORBIDDEN`과 다음과 같은 결과값을 반환하게 됩니다.
 ```json
 {
-  "status_code": 403,
-  "detail": "ban for 5 minutes",
-  "headers": null
+  "detail": "ban for 5 minutes"
 }
 ```
 
-만일 `id` 값이 비어있다면, 다음과 같은 결과값을 반환하게 됩니다. 
+만일 `id` 값이 비어있다면, `400 BAD REQUEST`와 다음과 같은 결과값을 반환하게 됩니다. 
 ```json
 {
-  "status_code": 400,
-  "detail": "id is null",
-  "headers": null
+  "detail": "id is null"
 }
 ```
 
-만일 `password` 값이 비어있다면, 다음과 같은 결과값을 반환하게 됩니다.
+만일 `password` 값이 비어있다면, `400 BAD REQUEST`와 다음과 같은 결과값을 반환하게 됩니다.
 ```json
 {
-  "status_code": 400,
-  "detail": "password is null",
-  "headers": null
+  "detail": "password is null"
 }
 ```
 
-만일 `id`와 `password` 값이 동시에 비어있다면, 다음과 같은 결과값을 반환하게 됩니다.
+만일 `id`와 `password` 값이 동시에 비어있다면, `400 BAD REQUEST`와 다음과 같은 결과값을 반환하게 됩니다.
 ```json
 {
-  "status_code": 400,
-  "detail": "id and password is null",
-  "headers": null
+  "detail": "id and password is null"
 }
 ```
