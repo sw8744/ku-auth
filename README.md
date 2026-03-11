@@ -5,7 +5,13 @@
 이 API는 [건국대학교 ecampus](https://ecampus.konkuk.ac.kr/)의 로그인 시스템을 활용하여 건국대학교 재학생들을 대상으로 하는 서비스 개발에 유용하게 사용될 수 있도록 개발하였습니다.
 
 # 사용 방법
-`/api/ku_login` 주소로 `POST` 요청을 보냅니다. 이때 QueryString에 `id`와 `password` 값을 같이 해서 보냅니다.
+`/api/ku_login` 주소로 `POST` 요청을 보냅니다. 이때 Body에 다음과 같이`id`와 `password` 값을 `json` 형태로 보냅니다.
+```json
+{
+  "id": "ku",
+  "password": "konkuk"
+}
+```
 
 만일 로그인이 성공하였다면, `200 OK`와 다음과 같은 결과값을 반환하게 됩니다. 이때, 반환된 정보는 ecampus에 등록된 사용자 정보를 반환합니다.
 ```json
