@@ -89,7 +89,6 @@ def ku_login(id: str, password: str):
         detail=info
     )
 
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=5001)
