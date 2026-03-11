@@ -46,9 +46,10 @@ def ku_login(id: str, password: str):
         "encoding": "utf-8"
     }
 
-    login_response = session.post(url="https://ecampus.konkuk.ac.kr/ilos/lo/login.acl?data=jsonLogin",
-               headers=headers,
-               data=body
+    login_response = session.post(
+        url="https://ecampus.konkuk.ac.kr/ilos/lo/login.acl?data=jsonLogin",
+        headers=headers,
+        data=body
                )
 
     login_response_json = json.loads(login_response.text.strip()[11:-2])
