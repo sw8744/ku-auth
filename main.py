@@ -3,6 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import json
 from bs4 import BeautifulSoup
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    id: str = ""
+    password: str = ""
 
 app = FastAPI()
 app.add_middleware(
@@ -11,22 +16,22 @@ app.add_middleware(
     allow_methods=["*"], allow_headers=["*"],
 )
 
-@app.get("/api/ku_login")
-def ku_login(id: str, password: str):
-    if id == "" and password == "":
-        return HTTPException(
+@app.post("/api/ku_login")
+def ku_login(item: Item):
+    if item.id == "" and item.password == "":
+        raise HTTPException(
             status_code=400,
             detail="id and password is null"
         )
 
-    elif id == "":
-        return HTTPException(
+    elif item.id == "":
+        raise HTTPException(
             status_code=400,
             detail="id is null"
         )
 
-    elif password == "":
-        return HTTPException(
+    elif item.password == "":
+        raise HTTPException(
             status_code=400,
             detail="password is null"
         )
@@ -40,8 +45,8 @@ def ku_login(id: str, password: str):
     session.post("https://ecampus.konkuk.ac.kr/ilos/lo/logout.acl", timeout=10)
 
     body = {
-        "usr_id": id,
-        "usr_pwd": password,
+        "usr_id": item.id,
+        "usr_pwd": item.password,
         "campus_div": "1",
         "encoding": "utf-8"
     }
@@ -56,12 +61,12 @@ def ku_login(id: str, password: str):
 
     if login_response_json["isError"]:
         if login_response_json["message"] == "ID 또는 비밀번호를 5회이상 잘못 입력하셨습니다. 5분 후에 다시 접속하시기 바랍니다.":
-            return HTTPException(
+            raise HTTPException(
                 status_code=403,
                 detail="ban for 5 minutes"
             )
 
-        return HTTPException(
+        raise HTTPException(
             status_code=401,
             detail="incorrect id or password"
         )
@@ -85,7 +90,7 @@ def ku_login(id: str, password: str):
         "email": tds[6]
     }
 
-    return HTTPException(
+    raise HTTPException(
         status_code=200,
         detail=info
     )
